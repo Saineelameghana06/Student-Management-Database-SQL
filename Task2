@@ -1,0 +1,104 @@
+/* ============================================
+   SQL Data Analysis Internship - Task 2
+   Extending Student Management Database
+   ============================================ */
+
+USE StudentManagement;
+GO
+
+/* ============================================
+   1) Create Courses Table
+   ============================================ */
+
+CREATE TABLE Courses (
+    CourseID INT PRIMARY KEY IDENTITY(1,1),
+    CourseName VARCHAR(50)
+);
+GO
+
+/* ============================================
+   2) Create Enrollments Table
+   ============================================ */
+
+CREATE TABLE Enrollments (
+    EnrollmentID INT PRIMARY KEY IDENTITY(1,1),
+    StudentID INT,
+    CourseID INT,
+    Grade INT,
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
+    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
+);
+GO
+
+/* ============================================
+   3) Insert Sample Courses
+   ============================================ */
+
+INSERT INTO Courses (CourseName)
+VALUES
+('SQL'),
+('Python'),
+('Data Analytics');
+GO
+
+/* ============================================
+   4) Insert Sample Enrollments
+   ============================================ */
+
+INSERT INTO Enrollments (StudentID, CourseID, Grade)
+VALUES
+(1,1,85),(1,2,90),(1,3,88),
+(2,1,75),(2,2,70),(2,3,72),
+(3,1,92),(3,2,95),(3,3,93),
+(4,1,60),(4,2,55),(4,3,58),
+(5,1,80),(5,2,85),(5,3,82),
+(6,1,96),(6,2,94),(6,3,97),
+(7,1,35),(7,2,40),(7,3,38),
+(8,1,78),(8,2,76),(8,3,74),
+(9,1,89),(9,2,91),(9,3,90),
+(10,1,65),(10,2,68),(10,3,70);
+GO
+
+/* ============================================
+   5) Queries
+   ============================================ */
+
+-- Q1: List all students enrolled in each course
+SELECT 
+    c.CourseName,
+    s.Name,
+    e.Grade
+FROM Enrollments e
+JOIN Students s ON e.StudentID = s.StudentID
+JOIN Courses c ON e.CourseID = c.CourseID
+ORDER BY c.CourseName;
+GO
+
+
+-- Q2: Average grade per course
+SELECT 
+    c.CourseName,
+    AVG(e.Grade) AS AvgGrade
+FROM Enrollments e
+JOIN Courses c ON e.CourseID = c.CourseID
+GROUP BY c.CourseName;
+GO
+
+
+-- Q3: Top 3 students overall (based on average grade)
+SELECT TOP 3
+    s.Name,
+    AVG(e.Grade) AS AvgGrade
+FROM Enrollments e
+JOIN Students s ON e.StudentID = s.StudentID
+GROUP BY s.Name
+ORDER BY AvgGrade DESC;
+GO
+
+
+-- Q4: Count students who failed (grade < 40)
+SELECT 
+    COUNT(*) AS FailedStudents
+FROM Enrollments
+WHERE Grade < 40;
+GO
