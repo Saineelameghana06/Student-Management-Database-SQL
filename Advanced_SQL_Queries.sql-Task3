@@ -1,0 +1,65 @@
+/* ============================================
+   SQL Data Analysis Internship - Task 3
+   Advanced SQL Queries
+   ============================================ */
+
+USE StudentManagement;
+GO
+
+/* ============================================
+   Q1: Top student per course
+   ============================================ */
+
+SELECT 
+    c.CourseName,
+    s.Name,
+    e.Grade
+FROM Enrollments e
+JOIN Students s ON e.StudentID = s.StudentID
+JOIN Courses c ON e.CourseID = c.CourseID
+WHERE e.Grade = (
+    SELECT MAX(e2.Grade)
+    FROM Enrollments e2
+    WHERE e2.CourseID = e.CourseID
+);
+
+
+/* ============================================
+   Q2: Pass rate per course (grade >= 40)
+   ============================================ */
+
+SELECT 
+    c.CourseName,
+    SUM(CASE WHEN e.Grade >= 40 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS PassRate
+FROM Enrollments e
+JOIN Courses c ON e.CourseID = c.CourseID
+GROUP BY c.CourseName;
+GO
+
+
+/* ============================================
+   Q3: Overall topper across all courses
+   ============================================ */
+
+SELECT TOP 1
+    s.Name,
+    AVG(e.Grade) AS AverageGrade
+FROM Enrollments e
+JOIN Students s ON e.StudentID = s.StudentID
+GROUP BY s.Name
+ORDER BY AverageGrade DESC;
+GO
+
+
+/* ============================================
+   Q4: Students enrolled in multiple courses
+   ============================================ */
+
+SELECT 
+    s.Name,
+    COUNT(e.CourseID) AS TotalCourses
+FROM Enrollments e
+JOIN Students s ON e.StudentID = s.StudentID
+GROUP BY s.Name
+HAVING COUNT(e.CourseID) > 1;
+GO
