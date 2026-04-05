@@ -120,3 +120,40 @@ In Task 4, analytical reports were generated using SQL joins, aggregations, and 
 - Generated analytical reports from relational data
 - Improved reporting skills using SQL
 - Practiced business-style SQL queries
+
+---
+
+## Task 5 – Advanced SQL Analytics with Window Functions and Views
+
+In Task 5, advanced SQL analytical techniques were implemented using window functions, common table expressions (CTEs), and views to generate reusable business reports.
+
+### Concepts Implemented
+- Window Functions (`RANK`, `PERCENT_RANK`, `NTILE`, Running Average)
+- Common Table Expressions (CTEs)
+- SQL Views
+- Advanced Aggregations
+
+### Queries Implemented
+
+1. **Top 3 Students per Course**
+   - Used `RANK()` to identify top performers in each course.
+
+2. **Percentile Ranking per Course**
+   - Used `PERCENT_RANK()` to compare each student's grade within the course.
+
+3. **Quartile Distribution**
+   - Used `NTILE(4)` to divide students into four performance groups.
+
+4. **Running Average per Student**
+   - Calculated cumulative average grade using window functions.
+
+5. **Course Statistics View**
+   - Created reusable view for average, minimum, maximum grades and total students per course.
+
+6. **Student Ranking View**
+   - Created reusable ranking view for student performance by course.
+
+### Learning Outcome
+- Practiced analyst-level SQL queries
+- Built reusable reporting views
+- Improved understanding of ranking and percentile analysis
