@@ -83,3 +83,40 @@ In Task 3, advanced SQL queries were implemented to analyze student performance 
 - Practiced advanced SQL queries
 - Improved understanding of analytical queries
 - Learned to analyze relational data using joins and aggregations
+
+
+---
+
+## Task 4 – Analytical Reports with SQL
+
+In Task 4, analytical reports were generated using SQL joins, aggregations, and subqueries to simulate real-world data analysis scenarios.
+
+### Reports Implemented
+
+1. **Average Grade by Gender**
+   - Compared average grades of male and female students across all enrolled courses.
+
+2. **Pass Rate per Course**
+   - Calculated pass percentage for each course using grades greater than or equal to 40.
+
+3. **Top 3 Students Overall**
+   - Identified top-performing students based on average grades across all courses.
+
+4. **Students Enrolled in Multiple Courses**
+   - Listed students enrolled in more than two courses using GROUP BY and HAVING.
+
+5. **Highest Grade Report**
+   - Displayed student details with the highest grade across all courses.
+
+### SQL Concepts Used
+- INNER JOIN
+- GROUP BY
+- HAVING
+- Aggregate Functions (AVG, COUNT, MAX)
+- CASE Statement
+- Subqueries
+
+### Learning Outcome
+- Generated analytical reports from relational data
+- Improved reporting skills using SQL
+- Practiced business-style SQL queries
