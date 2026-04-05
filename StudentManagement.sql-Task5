@@ -1,0 +1,113 @@
+/* ============================================
+   SQL Data Analysis Internship - Task 5
+   Window Functions + CTE + Views
+   ============================================ */
+
+USE StudentManagement;
+GO
+
+/* ============================================
+   Q1: Top 3 Students per Course using RANK()
+   ============================================ */
+
+WITH StudentCourseAvg AS (
+    SELECT 
+        c.CourseName,
+        s.Name,
+        AVG(e.Grade) AS AvgGrade,
+        RANK() OVER (PARTITION BY c.CourseName ORDER BY AVG(e.Grade) DESC) AS RankNo
+    FROM Enrollments e
+    JOIN Students s ON e.StudentID = s.StudentID
+    JOIN Courses c ON e.CourseID = c.CourseID
+    GROUP BY c.CourseName, s.Name
+)
+SELECT *
+FROM StudentCourseAvg
+WHERE RankNo <= 3;
+GO
+
+
+/* ============================================
+   Q2: Percentile Ranking per Course
+   ============================================ */
+
+SELECT 
+    c.CourseName,
+    s.Name,
+    e.Grade,
+    PERCENT_RANK() OVER (PARTITION BY c.CourseName ORDER BY e.Grade) AS PercentileRank
+FROM Enrollments e
+JOIN Students s ON e.StudentID = s.StudentID
+JOIN Courses c ON e.CourseID = c.CourseID;
+GO
+
+
+/* ============================================
+   Q3: Quartile Grouping using NTILE(4)
+   ============================================ */
+
+SELECT 
+    c.CourseName,
+    s.Name,
+    e.Grade,
+    NTILE(4) OVER (PARTITION BY c.CourseName ORDER BY e.Grade DESC) AS Quartile
+FROM Enrollments e
+JOIN Students s ON e.StudentID = s.StudentID
+JOIN Courses c ON e.CourseID = c.CourseID;
+GO
+
+
+/* ============================================
+   Q4: Running Average Grade per Student
+   ============================================ */
+
+SELECT 
+    s.Name,
+    e.Grade,
+    AVG(e.Grade) OVER (
+        PARTITION BY s.Name
+        ORDER BY e.EnrollmentID
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS RunningAverage
+FROM Enrollments e
+JOIN Students s ON e.StudentID = s.StudentID;
+GO
+
+
+/* ============================================
+   Q5: View - Course Statistics
+   ============================================ */
+
+CREATE VIEW vw_course_stats AS
+SELECT 
+    c.CourseName,
+    AVG(e.Grade) AS AvgGrade,
+    MIN(e.Grade) AS MinGrade,
+    MAX(e.Grade) AS MaxGrade,
+    COUNT(*) AS TotalStudents
+FROM Enrollments e
+JOIN Courses c ON e.CourseID = c.CourseID
+GROUP BY c.CourseName;
+GO
+
+SELECT * FROM vw_course_stats;
+GO
+
+
+/* ============================================
+   Q6: View - Student Ranking
+   ============================================ */
+
+CREATE VIEW vw_student_ranking AS
+SELECT 
+    c.CourseName,
+    s.Name,
+    e.Grade,
+    RANK() OVER (PARTITION BY c.CourseName ORDER BY e.Grade DESC) AS RankNo
+FROM Enrollments e
+JOIN Students s ON e.StudentID = s.StudentID
+JOIN Courses c ON e.CourseID = c.CourseID;
+GO
+
+SELECT * FROM vw_student_ranking;
+GO
